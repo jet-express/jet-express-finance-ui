@@ -1,0 +1,81 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <card-loader *ngIf="loading"></card-loader>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group row">
+            <label class="col-md-1 col-form-label">Tahun
+            </label>
+            <div class="col-md-3">
+              <input name="year" class="form-control" autocomplete="off" [(ngModel)]="data.year" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-1 col-form-label">Bulan</label>
+            <div class="col-md-3">
+              <input name="month" class="form-control" [(ngModel)]="data.month" autocomplete="off" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-1 col-form-label">Minggu</label>
+            <div class="col-md-3">
+              <input name="week" class="form-control" [(ngModel)]="data.week" autocomplete="off" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-1 col-form-label" for="text-input">Tanggal Terima</label>
+            <div class="col-md-3">
+              <input name="receivedDate" class="form-control" value="{{data.receivedDate | date : 'dd MMMM yyyy'}}" autocomplete="off"
+                readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-1 col-form-label" for="text-input">Penerima</label>
+            <div class="col-md-3">
+              <input name="receiver" class="form-control" value="{{data.receiver}}" autocomplete="off" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-1 col-form-label">Memo</label>
+            <div class="col-md-4">
+              <textarea name="note" cols="30" rows="5" class="form-control" value="{{data.note}}" readonly></textarea>
+            </div>
+          </div>
+
+          <table class="table table-striped" style="background-color: white; margin-top: 20px;">
+            <thead>
+              <tr>
+                <th scope="col">Total Anggaran</th>
+                <th scope="col">Cabang</th>
+                <th scope="col">Pembuat Anggaran</th>
+                <th scope="col">Dibuat Pada</th>
+              </tr>
+              <tr>
+                <td>
+                  <input class="form-control" value="{{data.amount | currency : 'Rp '}}" readonly>
+                </td>
+                <td>
+                  <input class="form-control" value="{{data.branchCode}}" readonly>
+                </td>
+                <td>
+                  <input class="form-control" value="{{data.createdBy}}" readonly>
+                </td>
+                <td>
+                  <input class="form-control" value="{{data.createdDate | date : 'dd MMMM yyyy'}}" readonly>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              </tr>
+            </tbody>
+          </table>
+          <div class="card-footer" style="text-align: right">
+            <button type="button" class="btn btn-primary" (click)="back()">Kembali</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

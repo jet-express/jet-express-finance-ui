@@ -1,0 +1,77 @@
+<app-header
+  [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo.png', width: 89, height: 25, alt: 'CoreUI Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="'lg'">
+
+  <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <img src="assets/img/avatars/user.svg" class="img-avatar" alt="moonlay"/>
+        <span class="d-none d-md-inline-block">{{ currentUser.email }}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+<div class="app-body">
+  <app-sidebar [fixed]="true" [display]="'lg'">
+    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <!-- breaking change 'cui-breadcrumb' -->
+    <cui-breadcrumb>
+      <!-- Breadcrumb Menu-->
+      <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        </div>
+      </li>
+    </cui-breadcrumb>
+    <!-- deprecation warning for 'app-breadcrumb' -->
+    <!--<ol class="breadcrumb">-->
+      <!--<app-breadcrumb></app-breadcrumb>-->
+      <!--&lt;!&ndash; Breadcrumb Menu&ndash;&gt;-->
+      <!--<li class="breadcrumb-menu d-md-down-none">-->
+        <!--<div class="btn-group" role="group" aria-label="Button group with nested dropdown">-->
+          <!--<a class="btn" href="#"><i class="icon-speech"></i></a>-->
+          <!--<a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>-->
+          <!--<a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ol>-->
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div><!-- /.container-fluid -->
+  </main>
+  <app-aside [fixed]="true" [display]="true">
+      <!-- <tabset>
+        <tab>
+          <ng-template tabHeading><i class="icon-list"></i></ng-template> -->
+  
+          <div class="list-group list-group-accent" [perfectScrollbar] style="max-height: calc(100% - 55px);">
+            <div class="list-group-item bg-light text-center font-weight-bold text-muted text-uppercase small">
+              Accessible Branches
+            </div>
+            <div class="list-group-item list-group-item-divider" *ngFor="let branch of accessBranches">
+              <button class="btn btn-block"
+                type="button" (click)="changeCurrentBranch(branch)"
+                [ngClass]="{ 'btn-light': branch.code != currentBranch.code, 'btn-primary': branch.code == currentBranch.code }"
+                [disabled]="branch.code == currentBranch.code">
+                {{ branch.code }} - {{ branch.name }}
+              </button>
+            </div>
+          </div>
+        <!-- </tab>
+      </tabset> -->
+      
+    </app-aside>
+</div>
+<app-footer>
+  Copyright &copy;2019 JET express. All Rights Reserved
+</app-footer>

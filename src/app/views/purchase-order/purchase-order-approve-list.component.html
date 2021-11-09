@@ -1,0 +1,78 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <card-loader *ngIf="loading"></card-loader>
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-2 col-xl-2">
+          <div class="form-group m-0">
+            <div class="input-group">
+              <input type="text" placeholder="Datepicker" class="form-control" (onHidden)="search()" [(ngModel)]="pageQuery.date"
+                #dp="bsDatepicker" bsDatepicker>
+              <span class="input-group-append">
+                <button class="btn btn-success" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xl-3 ml-auto">
+          <form (submit)="search()">
+            <div class="form-group m-0">
+              <div class="input-group">
+                <input type="text" class="form-control" name="keyword" [(ngModel)]="pageQuery.keyword" autocomplete="off" placeholder="Search"/>
+                <span class="input-group-append">
+                  <button class="btn btn-default" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <alert type="info" *ngIf="!loading && purchaseOrders.length == 0">
+        No Items
+      </alert>
+      <table class="table table-hover">
+        <tr *ngFor="let item of purchaseOrders" (click)="openDetail(item)" class="cursor-pointer">
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <span *ngIf="item.manifestNo != '-'" class="pull-right position-absolute" style="right: 1rem;">{{item.manifestNo}}</span>
+              </div>
+              <div class="col-md-3">
+                <div class="description-block">
+                  <label>{{item.code}}</label>
+                  {{item.vendorName}}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="description-block">
+                  <label>{{item.branchCode}}</label>
+                  {{item.createdDate | date : 'dd MMM yyyy HH:mm'}}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="description-block">
+                  <label>{{item.type}}</label>
+                  {{item.status}}
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer">
+      <pagination class="pull-right" [maxSize]="5" [boundaryLinks]="true" [totalItems]="pageQuery.count" [itemsPerPage]="pageQuery.size"
+      [(ngModel)]="pageQuery.page" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+    <div class="row">
+    <card-loader *ngIf="loading"></card-loader>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Code</label>
+                  <span>{{data.code}}</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Tipe</label>
+                  <span>{{data.type}}</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Status</label>
+                  <span>{{data.status}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Vendor</label>
+                  <span>{{data.vendorName}}</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Tanggal</label>
+                  <span>{{data.createdDate| date : 'dd MMM yyyy HH:mm'}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Dibuat Oleh</label>
+                  <span>{{data.creator}}</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="description-block">
+                  <label>Cabang</label>
+                  <span>{{data.branchCode}}</span>
+                </div>
+              </div>
+            </div>
+  
+            <table class="table table-striped" style="background-color: white; margin-top: 20px;">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Satuan</th>
+                  <th scope="col">Harga Satuan</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data.items; let i = index;">
+                  <th>{{i+1}}</th>
+                  <td>{{item.name}}</td>
+                  <td>{{item.quantity}}</td>
+                  <td>{{item.unitOfMeasure}}</td>
+                  <td>{{item.unitPrice  | currency : 'Rp '}}</td>
+                  <td>{{item.unitPrice * item.quantity  | currency : 'Rp '}}</td>
+                </tr>
+                <tr *ngIf="data.items.length > 0">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td style="text-align: right"><b>GRAND TOTAL :</b></td>
+                  <td><b>{{data.grandTotal  | currency : 'Rp '}}</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer" style="text-align: right">
+            <button type="button" class="btn btn-success" (click)="print()">Print</button>
+            <button type="button" class="btn btn-danger" (click)="delete()" *ngIf="isDeleted">Delete</button>
+            <button type="button" class="btn btn-primary" (click)="back()">Kembali</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isPrinting">
+        <purchase-order-print [data] = "data"></purchase-order-print>
+    </div>
+  </div>

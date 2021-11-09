@@ -1,0 +1,118 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <card-loader *ngIf="loading"></card-loader>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form #form="ngForm" (submit)="save(data)">
+              <div class="form-group row">
+                <label class="col-md-1 col-form-label">Vendor
+                  <span *ngIf="loadingVendor">
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </span>
+                </label>
+                <div class="col-md-4">
+                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="vendorSelected" [typeahead]="dataVendor" (typeaheadLoading)="changeTypeaheadLoading($event)"
+                    (typeaheadOnSelect)="typeaheadOnSelect($event)" (typeaheadNoResults)="typeaheadNoResults($event)" (typeaheadOnSelect)="onSelect($event)"
+                    [typeaheadWaitMs]="300" [typeaheadOptionsLimit]="8" [typeaheadOptionField]="'label'" class="form-control"
+                    placeholder="Pilih Vendor" name="vendor" autocomplete="off" required>
+                </div>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="col-md-1 col-form-label">Pembuat</label>
+                <div class="col-md-4">
+                  <input type="text" name="creator" class="form-control" [(ngModel)]="data.creator" required>
+                </div>
+              </div> -->
+
+              <div class="form-group row">
+                <label class="col-md-1 col-form-label">Memo</label>
+                <div class="col-md-4">
+                    <textarea name="memo" cols="30" rows="5" class="form-control" [(ngModel)]="data.note" required></textarea>
+                </div>
+              </div>
+              
+              <div class="table-responsive d-none d-md-block">
+                <table class="table table-striped table-layout-fixed">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 230px;">No PO
+                        <i class="fa fa-spinner fa-spin" *ngIf="loadingPo"></i>
+                      </th>
+                      <th scope="col" style="width: 230px;">No Invoice Vendor</th>
+                      <th scope="col" style="width: 230px;">Jatuh Tempo</th>
+                      <th scope="col" style="width: 230px;">Tipe</th>
+                      <th scope="col" style="width: 230px;">Periode</th>
+                      <th scope="col" style="width: 230px;">Qty PO</th>
+                      <th scope="col" style="width: 230px;">Qty Invoice</th>
+                      <th scope="col" style="width: 230px;">Satuan</th>
+                      <th scope="col" style="width: 230px;">Total Tagihan</th>
+                      <th scope="col" style="width: 230px;">Keterangan Selisih</th>
+                      <th scope="col">
+                        <button type="button" class="btn btn-success" *ngIf="isSelected" (click)="addRow()">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of data.invoiceItems; let i = index;">
+                      <td>
+                        <input type="text" name="purchaseOrderCode[{{i}}]" class="form-control" [(disabled)]="!isSelected" 
+                          [(ngModel)]="item.purchaseOrderCode" (ngModelChange)="changePo(i)" (keyup.enter)="getPo(i)" (blur)="getPo(i)" autocomplete="off">
+                      </td>
+                      <td>
+                        <input type="text" name="invoiceVendorNo[{{i}}]" class="form-control" [(ngModel)]="item.vendorInvoiceNo" autocomplete="off" required>
+                      </td>
+                      <td>                      
+                        <div class="input-group">
+                          <input type="text" name="dueDate[{{i}}]" class="form-control" [(ngModel)]="item.dueDate" [ngModelOptions]="{standalone: true}" bsDatepicker #dp="bsDatepicker">
+                          <span class="input-group-append">
+                            <button type="button" class="btn btn-success" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen">
+                              <i class="fa fa-calendar"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="text" name="type[{{i}}]" class="form-control" [(ngModel)]="item.type" autocomplete="off">
+                      </td>
+                      <td>
+                        <input type="text" name="startPeriod[{{i}}]" class="form-control" [(ngModel)]="item.period" autocomplete="off" readonly>
+                      </td>
+                      <td>
+                        <input type="text" name="poQuatity[{{i}}]" class="form-control" [(ngModel)]="item.poQuatity" autocomplete="off" readonly>
+                      </td>
+                      <td>
+                        <input currencyMask name="invoiceQuantity[{{i}}]" class="form-control" [(ngModel)]="item.invoiceQuantity" autocomplete="off"
+                          [options]="{allowNegative :false, prefix : ' ', precision : 0}">
+                      </td>
+                      <td>
+                        <input type="text" name="unitOfMeasure[{{i}}]" class="form-control" [(ngModel)]="item.unitOfMeasure" autocomplete="off" readonly>
+                      </td>
+                      <td>
+                        <input currencyMask name="totalBill[{{i}}]" class="form-control" [(ngModel)]="item.totalBill" autocomplete="off"
+                        [options]="{allowNegative :false, prefix : ' ', precision : 0}">
+                      </td>
+                      <td>
+                        <input type="text" name="note[{{i}}]" class="form-control" [(ngModel)]="item.note" autocomplete="off">
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-danger" *ngIf="i > 0" (click)="deleteRow(i)">
+                          <i class="fa fa-times"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="submit" class="btn btn-primary" style="float: right; margin-top: 10px;" [disabled]="form.form.invalid || !isSelected">Simpan</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isPrinting">
+      <invoice-print [data] = "result"></invoice-print>
+    </div>
+  </div>

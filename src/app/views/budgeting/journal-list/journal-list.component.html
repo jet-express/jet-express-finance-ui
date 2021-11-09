@@ -1,0 +1,48 @@
+<div class="animated fadeIn">
+    <div class="card">
+      <card-loader *ngIf="loading"></card-loader>
+        
+      <div class="card-body">
+        <alert type="info" *ngIf="!loading && budgetHandovers.length == 0">
+          No Items
+        </alert>
+        <table class="table table-hover">
+          <tr class="cursor-pointer" *ngFor="let item of budgetHandovers" (click)="openDetail(item)">
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="badge badge-dark pull-right position-absolute" style="right: 1rem;"></span>
+                </div>
+                <div class="col-md-3">
+                  <div class="description-block">
+                    <label>{{item.week}}</label>
+                    {{item.month}} {{item.year}}
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="description-block">
+                    <label>{{item.branchCode}}</label>
+                    {{item.createdDate | date : 'dd MMM yyyy HH:mm'}}
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="description-block">
+                    <label>{{item.receiver}}</label>
+                    {{item.amount | currency : 'Rp '}}
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+  
+      <div class="card-footer">
+        <pagination class="pull-right" [maxSize]="5" [boundaryLinks]="true" [(ngModel)]="pageQuery.page" [totalItems]="pageQuery.count"
+          [itemsPerPage]="pageQuery.size" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+          lastText="&raquo;"></pagination>
+      </div>
+    </div>
+  </div>
+  
+  <router-outlet></router-outlet>

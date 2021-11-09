@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <card-loader *ngIf="loading"></card-loader>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Tahun</label>
+                <span>{{data.year}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Cabang</label>
+                <span>{{data.branchCode}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Status</label>
+                <span>{{data.status}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Bulan</label>
+                <span>{{data.month}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Dibuat Oleh</label>
+                <span>{{data.createdBy}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Dibuat Pada</label>
+                <span>{{data.createdDate | date : 'dd MMM yyyy HH:mm'}}</span>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-striped" style="background-color: white; margin-top: 20px;">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Keperluan</th>
+                <th scope="col">Minggu 1</th>
+                <th scope="col">Minggu 2</th>
+                <th scope="col">Minggu 3</th>
+                <th scope="col">Minggu 4</th>
+                <th scope="col">Minggu 5</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data.vmBudgetItems; let i = index;">
+                <th>{{i+1}}</th>
+                <td>{{item.budgetType}}</td>
+                <td>{{item.week1 | currency : 'Rp '}}</td>
+                <td>{{item.week2 | currency : 'Rp '}}</td>
+                <td>{{item.week3 | currency : 'Rp '}}</td>
+                <td>{{item.week4 | currency : 'Rp '}}</td>
+                <td>{{item.week5 | currency : 'Rp '}}</td>
+                <td>{{item.typeSum | currency : 'Rp '}}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; text-align: right" colspan="2">Grand Total</td>
+                <td style="font-weight: bold">{{totalWeek1 | currency : 'Rp '}}</td>
+                <td style="font-weight: bold">{{totalWeek2 | currency : 'Rp '}}</td>
+                <td style="font-weight: bold">{{totalWeek3 | currency : 'Rp '}}</td>
+                <td style="font-weight: bold">{{totalWeek4 | currency : 'Rp '}}</td>
+                <td style="font-weight: bold">{{totalWeek5 | currency : 'Rp '}}</td>
+                <td style="font-weight: bold">{{grandTotal | currency : 'Rp '}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <span *ngIf="path == 'approve/:code'" style="float: left">
+            <button type="button" class="w100 btn btn-primary" (click)="back()">Kembali</button>
+          </span>
+          <span style="float: right;">
+            <button *ngIf="path == 'approve/:code'" type="button" class="w100 btn btn-danger" (click)="rejectData()">Reject</button>
+            <button *ngIf="path == 'approve/:code'" type="button" class="w100 m-r-10 btn btn-success" (click)="approveData()">Approve</button>
+            <button *ngIf="path != 'approve/:code'" type="button" class="w100 btn btn-success" (click)="print()">Print</button>
+            <button *ngIf="path != 'approve/:code'" type="button" class="w100 btn btn-primary" (click)="back()">Kembali</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

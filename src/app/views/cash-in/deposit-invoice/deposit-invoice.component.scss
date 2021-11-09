@@ -1,0 +1,35 @@
+.fixed-header{
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.fixed-header tbody{
+  display:block;
+  width: 100%;
+  overflow: auto;
+  height: 400px;
+}
+
+.fixed-header thead tr {
+   display: block;
+}
+
+.fixed-header tbody tr {
+    height: 60px;
+ }
+
+ .fixed-header tbody td{
+    display: table-cell;
+    vertical-align: middle;
+ }
+
+.fixed-header thead {
+  background: #2F353A;
+  color:#fff;
+}
+
+.fixed-header th, .fixed-header td {
+  padding: 10px;
+  text-align: left;
+}

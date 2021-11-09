@@ -1,0 +1,63 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <card-loader *ngIf="loading"></card-loader>
+    <div *ngIf="path == 'list'" class="card-header">
+      <div class="row">
+        <div class="col-md-2 col-xl-2">
+          <div class="form-group m-0">
+            <div class="input-group">
+              <select name="status" class="form-control" [(ngModel)]="selectedStatus" (ngModelChange)="search()">
+                <option value="" disabled>Status</option>
+                <option value="All">All</option>
+                <option *ngFor="let item of statusList" [ngValue]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <alert type="info" *ngIf="!loading && budgets.length == 0">
+        No Items
+      </alert>
+      <table class="table table-hover">
+        <tr *ngFor="let item of budgets" (click)="openDetail(item)" class="cursor-pointer">
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <span class="badge badge-dark pull-right position-absolute" style="right: 1rem;"></span>
+              </div>
+              <div class="col-md-3">
+                <div class="description-block">
+                  <label>{{item.month}}</label>
+                  {{item.year}}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="description-block">
+                  <label>{{item.branchCode}}</label>
+                  {{item.createdDate | date : 'dd MMM yyyy HH:mm'}}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="description-block">
+                  <label>{{item.grandTotal | currency : 'Rp '}}</label>
+                  {{item.status}}
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer">
+      <pagination class="pull-right" [maxSize]="5" [boundaryLinks]="true" [(ngModel)]="pageQuery.page" [totalItems]="pageQuery.count"
+        [itemsPerPage]="pageQuery.size" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+        lastText="&raquo;"></pagination>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

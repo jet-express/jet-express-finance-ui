@@ -1,0 +1,73 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <card-loader *ngIf="loading"></card-loader>
+        <div class="card-body">
+          <form #form="ngForm" (submit)="getData()">
+            <div class="form-group row">
+              <label class="col-md-1 col-form-label">Vendor
+                <span *ngIf="loadingVendor">
+                  <i class="fa fa-spinner fa-spin"></i>
+                </span>
+              </label>
+              <div class="col-md-3">
+                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="vendorSelected" [typeahead]="dataVendor" (typeaheadLoading)="changeTypeaheadLoading($event)"
+                  (typeaheadOnSelect)="typeaheadOnSelect($event)" (typeaheadNoResults)="typeaheadNoResults($event)" (typeaheadOnSelect)="onSelect($event)"
+                  [typeaheadWaitMs]="300" [typeaheadOptionsLimit]="8" [typeaheadOptionField]="'label'" class="form-control"
+                  placeholder="Pilih Vendor" name="vendor" autocomplete="off" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-1 col-form-label">Periode</label>
+              <div class="col-md-3">
+                <input class="form-control" [(ngModel)]="dateRange" name="dateRange" autocomplete="off" bsDaterangepicker required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <button type="submit" class="btn btn-primary" style="float: right; margin-top: 10px;" [disabled]="form.form.invalid || !isSelected">Cari</button>
+              </div>
+            </div>
+          </form>
+
+          <alert type="info" *ngIf="isShow && !loading && data.length == 0">
+            No Items
+          </alert>
+
+          <table class="table table-striped" style="background-color: white; margin-top: 20px;" *ngIf="!loading && data.length > 0">
+            <thead>
+              <tr>
+                <th scope="col">No Invoice</th>
+                <th scope="col">Total Tagihan</th>
+                <th scope="col">Tanggal Bayar</th>
+                <th scope="col">Total Bayar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data; let i = index;">
+                <td>
+                  <label>{{item.invoiceCode}}</label>
+                </td>
+                <td>
+                  <label>{{item.totalBill | currency : 'Rp '}}</label>
+                </td>
+                <td>
+                  <label>{{item.transactionDate | date : 'dd MMM yyy'}}</label>
+                </td>
+                <td>
+                  <label>{{item.paidAmount | currency : 'Rp '}}</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer" >
+          <pagination class="pull-right" [maxSize]="5" [boundaryLinks]="true" [totalItems]="pageQuery.count" [itemsPerPage]="pageQuery.size"
+          [(ngModel)]="pageQuery.page" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

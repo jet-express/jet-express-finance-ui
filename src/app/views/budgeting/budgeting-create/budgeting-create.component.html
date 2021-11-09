@@ -1,0 +1,120 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <card-loader *ngIf="loading"></card-loader>
+        <div class="card-body">
+          <form #form="ngForm" (submit)="save(data)">
+            <div class="form-group row required">
+              <label class="col-md-1 col-form-label">Tahun</label>
+              <div class="col-md-3">
+                  <select id="year" name="year" class="form-control" [(ngModel)]="selectedYear" required>
+                    <option value="" disabled>Please select</option>
+                    <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                  </select>
+              </div>
+            </div>
+            <div class="form-group row required">
+              <label class="col-md-1 col-form-label">Bulan</label>
+              <div class="col-md-3">
+                  <select id="month" name="month" class="form-control" [(ngModel)]="data.month" required>
+                    <option value="" disabled>Please select</option>
+                    <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
+                  </select>
+              </div>
+            </div>
+          
+            <table class="table table-striped" style="background-color: white; margin-top: 20px;">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 250px">Keperluan<label style="color: red">*</label></th>
+                  <th scope="col">Minggu 1</th>
+                  <th scope="col">Minggu 2</th>
+                  <th scope="col">Minggu 3</th>
+                  <th scope="col">Minggu 4</th>
+                  <th scope="col">Minggu 5</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">
+                    <button type="button" class="btn btn-success" (click)="addRow()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data.vmBudgetItems; let i = index;">
+                  <td>
+                    <select name="budgetItemType[{{i}}]" class="form-control" [(ngModel)]="item.budgetType" (ngModelChange)="validateBudgetTypeItem(item.budgetType, i)" required>
+                      <option value="" disabled>Please select</option>
+                      <option *ngFor="let type of budgetingItemTypes" value="{{type.name}}">{{type.name}}</option>
+                    </select>
+                    <small style="color: red"><i>{{errors[i]}}</i></small>
+                  </td>
+                  <td>
+                      <input currencyMask class="form-control" name="week1[{{i}}]" type="tel" (blur)= "countSum()"
+                        [(ngModel)]="item.week1" [options]="{allowNegative :false, prefix : ' ', precision : 0}" />
+                  </td>
+                  <td>
+                      <input currencyMask class="form-control" name="week2[{{i}}]" type="tel" (blur)= "countSum()"
+                        [(ngModel)]="item.week2" [options]="{allowNegative :false, prefix : ' ', precision : 0}" />
+                  </td>
+                  <td>
+                      <input currencyMask class="form-control" name="week3[{{i}}]" type="tel" (blur)= "countSum()"
+                        [(ngModel)]="item.week3" [options]="{allowNegative :false, prefix : ' ', precision : 0}" />
+                  </td>
+                  <td>
+                      <input currencyMask class="form-control" name="week4[{{i}}]" type="tel"  (blur)= "countSum()"
+                        [(ngModel)]="item.week4" [options]="{allowNegative :false, prefix : ' ', precision : 0}" />
+                  </td>
+                  <td>
+                      <input currencyMask class="form-control" name="week5[{{i}}]" type="tel"  (blur)= "countSum()"
+                        [(ngModel)]="item.week5" [options]="{allowNegative :false, prefix : ' ', precision : 0}" />
+                  </td>
+                  <td>
+                      <input currencyMask class="form-control" name="typeSum[{{i}}]" type="tel" [(ngModel)]="item.typeSum"
+                        [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly />
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger" *ngIf="i > 0" (click)="deleteRow(i)">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="text-align: right">Grand Total</td>
+                  <td>
+                    <input name="totalWeek1" currencyMask [(ngModel)]="totalWeek1" class="form-control" type="tel" 
+                      [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly>
+                    </td>
+                  <td>
+                    <input name="totalWeek2" currencyMask [(ngModel)]="totalWeek2" class="form-control" type="tel" 
+                      [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly>
+                    </td>
+                  <td>
+                    <input name="totalWeek3" currencyMask [(ngModel)]="totalWeek3" class="form-control" type="tel" 
+                      [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly>
+                    </td>
+                  <td>
+                    <input name="totalWeek4" currencyMask [(ngModel)]="totalWeek4" class="form-control" type="tel" 
+                      [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly>
+                    </td>
+                  <td>
+                    <input name="totalWeek5" currencyMask [(ngModel)]="totalWeek5" class="form-control" type="tel" 
+                      [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly>
+                    </td>
+                  <td>
+                    <input name="grandTotal" currencyMask [(ngModel)]="grandTotal" class="form-control" type="tel" 
+                      [options]="{allowNegative :false, prefix : ' ', precision : 0}" readonly>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary" style="float: right;" [disabled]="form.form.invalid || isClear">Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,163 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <card-loader *ngIf="loading"></card-loader>
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-2 col-xl-2">
+          <div class="form-group m-0">
+            <div class="input-group">
+              <input type="text" placeholder="Datepicker" class="form-control" (onHidden)="searchByDate()" [(ngModel)]="date" value="{{date | date: 'dd MMM yyyy'}}"
+                bsDatepicker #dp="bsDatepicker">
+              <span class="input-group-append">
+                <button class="btn btn-success" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xl-2">
+          <div class="form-group m-0">
+            <div class="input-group">
+              <select name="status" class="form-control" [(ngModel)]="selectedType" (ngModelChange)="filterByType()">
+                <option value="Cash Outlet">Cash Outlet</option>
+                <option value="Kredit T+2">Kredit T+2</option>
+                <option value="COD">COD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xl-3 ml-auto">
+            <div class="form-group m-0">
+              <div class="input-group">
+                <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" autocomplete="off" placeholder="Search" (keyup.enter)="searchAwbNumber()"/>
+                <span class="input-group-append">
+                  <button class="btn btn-default" type="button" (click)="searchAwbNumber()">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover fixed-header">
+        <thead>
+          <tr>
+            <th style="width: 1100px;">
+              <div class="description-block" style="float: right">
+                <label style="color: #FFF">Total Waybill</label>
+                {{totalWaybill}} / {{waybillDepositList.length}}
+              </div>
+            </th>
+            <th style="width: 430px">
+              <div class="description-block" style="float: right; margin-right: 50px">
+                <label style="color: #FFF">Total Deposit</label>
+                {{grandTotal | currency : 'Rp '}} / {{totalAmount | currency : 'Rp '}}
+              </div>
+            </th>
+            <th style="width: 70px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <alert type="info" *ngIf="!loading && waybillDepositList.length == 0">
+            No Items
+          </alert>
+          <tr *ngFor="let item of waybillDepositList">
+            <td style="width: 1530px;">
+              <div class="date-compact">
+                <span class="day">{{item.transactionDate  | date : 'dd'}}</span>
+                <span class="month">{{item.transactionDate  | date : 'MMM'}}</span>
+                <span class="year">{{item.transactionDate  | date : 'yyyy'}}</span>
+              </div>
+              <span class="vertical-separator"></span>
+              <div class="cubicle">
+                <div class="description-block-cash-in">
+                  <label>Awb Status</label>
+                  {{item.awbStatus}}
+                </div>
+              </div>
+              <span class="vertical-separator"></span>
+              <div class="cubicle">
+                <div class="description-block-cash-in">
+                  <label>Status</label>
+                  {{item.status}}
+                </div>
+              </div>
+              <span class="vertical-separator"></span>
+              <div class="cubicle">
+                <div class="description-block-cash-in">
+                  <label>No Waybill</label>
+                  {{item.awbNumber}}
+                </div>
+              </div>
+              <span class="vertical-separator"></span>
+              <div class="cubicle">
+                <div class="description-block-cash-in">
+                  <label>Payment Method</label>
+                  {{item.paymentMethodCode}}
+                </div>
+              </div>
+              <span class="vertical-separator"></span>
+              <div class="cubicle">
+                <div class="description-block-cash-in">
+                  <label>COD Type</label>
+                  {{item.codType}}
+                </div>
+              </div>
+              <span class="vertical-separator" *ngIf="selectedType != 'COD'"></span>
+              <div class="cubicle" *ngIf="selectedType == 'Cash Outlet'">
+                <div class="description-block-cash-in">
+                  <label>Outlet</label>
+                  {{item.kioskCode}}
+                </div>
+              </div>
+              <div class="cubicle" *ngIf="selectedType == 'Kredit T+2'">
+                <div class="description-block-cash-in">
+                  <label>Jet Id</label>
+                  {{item.jetid}}
+                </div>
+              </div>
+              <span class="vertical-separator" *ngIf="selectedType == 'Cash Outlet'"></span>
+              <div class="cubicle" *ngIf="selectedType == 'Cash Outlet'">
+                <div class="description-block-cash-in">
+                  <label>Collector</label>
+                  {{item.collector}}
+                </div>
+              </div>
+              <span class="vertical-separator" *ngIf="selectedType == 'COD'"></span>
+              <div class="cubicle" *ngIf="selectedType == 'COD'">
+                <div class="description-block-cash-in">
+                  <label>Courier</label>
+                  {{item.courierName}}
+                </div>
+              </div>
+              <span class="vertical-separator" *ngIf="selectedType == 'COD'"></span>
+              <div class="cubicle" *ngIf="selectedType == 'COD'">
+                <div class="description-block-cash-in">
+                  <label>Delivery Date</label>
+                  {{item.deliveryDate | date : 'dd MMM yyyy'}}
+                </div>
+              </div>
+              <span class="vertical-separator"></span>
+              <div class="cubicle">
+                <div class="description-block-cash-in">
+                  <label>{{item.waybillType == 'WDB' ? 'Harga Barang' : 'Amount'}}</label>
+                  {{item.amount | currency : 'Rp '}}
+                </div>
+              </div>
+            </td>
+            <td style="width: 70px; text-align: center">
+              <input type="checkbox" [(ngModel)]="item.isChecked" (ngModelChange)="countTotal()">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-primary" style="float: right;" (click)="save()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

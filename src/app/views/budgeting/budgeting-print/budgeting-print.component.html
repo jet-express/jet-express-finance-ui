@@ -1,0 +1,92 @@
+<!-- <div id="print" style="margin-top: 1000px;">
+    <div style="text-align: center; font-size: 18px;"><b>PURCHASE ORDER</b></div>
+    <table class="print-table" style="border: none; font-size: 12px;">
+      <tr style="height: 30px;">
+        <td>No.Po</td>
+        <td> : </td>
+        <td>{{data.code}}</td>
+        <pre></pre>
+      </tr>
+      <tr style="height: 30px;">
+        <td>Tanggal</td>
+        <td> : </td>
+        <td>{{data.createdDate | date : 'dd MMM yyy'}}</td>
+      </tr>
+      <tr style="height: 30px;">
+        <td>Supplier</td>
+        <td> : </td>
+        <td>{{data.vendorName}}</td>
+      </tr>
+    </table>
+    <div style=" margin: 5px 0px;">
+      <table style="border: 1px solid black; border-collapse: collapse; font-size: 12px;" align="center">
+        <tr>
+          <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">NO</th>
+          <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">NAMA BARANG</th>
+          <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">BANYAK</th>
+          <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">HARGA</th>
+          <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">TOTAL HARGA</th>
+        </tr>
+        <tr *ngFor="let item of data.items; let i = index">
+          <td style="padding: 15px 5px">{{i+1}}</td>
+          <td style="padding: 15px 5px; border-left: 1px solid black;">{{item.name}}</td>
+          <td style="padding: 15px 5px; border-left: 1px solid black;">{{item.quantity}}</td>
+          <td style="padding: 15px 5px; border-left: 1px solid black;">{{item.unitPrice  | currency : 'Rp '}}</td>
+          <td style="padding: 15px 5px; border-left: 1px solid black;">{{item.unitPrice * item.quantity  | currency : 'Rp '}}</td>
+        </tr>
+      </table>
+    </div>
+    <div style="padding: 10px 0; font-size: 12px;">
+      Keterangan :
+    </div>
+    <div style="text-align: center; font-size: 12px;">
+      <b>Invoice asli</b> dengan nilai total PO ini terlampir
+    </div>
+    <div style="text-align: center; padding: 20px; font-size: 12px;">
+      <div>
+        <b>PT JARINGAN EKSPEDISI TRANSPORTASI</b>
+      </div>
+      <div>
+        <b>Mendiriso 4 Blok A No. 6-9 Jl. Boulevard IL Iago, Gading Serpong, Tangerang 15810</b>
+      </div>
+    </div>
+    <table style="font-size: 12px;">
+      <tr>
+        <td style="padding: 5px 0">Waktu Pengiriman</td>
+        <td> : </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 0">Cara Pembayaran</td>
+        <td> : </td>
+        <td></td>
+      </tr>
+    </table>
+    <table style="border: 1px solid black; border-collapse: collapse; font-size: 12px; margin-top: 30px; text-align: center" align="center">
+      <tr>
+        <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">Dibuat Oleh</th>
+        <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">Direview Oleh</th>
+        <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">Disetujui Oleh</th>
+        <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">Subtotal</th>
+        <th style="border: 1px solid black; border-collapse: collapse; padding: 15px">{{data.grandTotal  | currency : 'Rp '}}</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px" rowspan="2"></td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px" rowspan="2"></td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px" rowspan="2"></td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">..........</td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">..........</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">..........</td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">..........</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">{{data.creator}}</td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">Jovin</td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">Peter D Chandra</td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">GRAND TOTAL</td>
+        <td style="border: 1px solid black; border-collapse: collapse; padding: 15px">{{data.grandTotal  | currency : 'Rp '}}</td>
+      </tr>
+    </table>
+  </div> -->

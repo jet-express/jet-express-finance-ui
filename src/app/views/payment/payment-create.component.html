@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <card-loader *ngIf="loadingInvoice || loading"></card-loader>
+          <div class="card-body">
+            <form #form="ngForm" (submit)="save(paymentInvoices)">
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label">Vendor
+                  <span *ngIf="loadingVendor">
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </span>
+                </label>
+                <div class="col-md-4">
+                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="vendorSelected" [typeahead]="dataVendor" (typeaheadLoading)="changeTypeaheadLoading($event)"
+                    (typeaheadOnSelect)="typeaheadOnSelect($event)" (typeaheadNoResults)="typeaheadNoResults($event)" (typeaheadOnSelect)="onSelect($event)"
+                    [typeaheadWaitMs]="300" [typeaheadOptionsLimit]="8" [typeaheadOptionField]="'label'" class="form-control"
+                    placeholder="Pilih Vendor" name="vendor" autocomplete="off" required>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label">Total Tagihan Outstanding</label>
+                <div class="col-md-4">
+                  <input currencyMask type="text" name="totalOutstanding" [(ngModel)]="totalOutstanding" class="form-control" 
+                    [options]="{allowNegative :false, prefix : 'Rp ', precision : 0}"readonly>
+                </div>
+              </div>
+            
+              <table class="table table-striped" style="background-color: white; margin-top: 20px;">
+                <thead>
+                  <tr>
+                    <th scope="col">Check</th>
+                    <th scope="col"></th>
+                    <th scope="col">No Invoice</th>
+                    <th scope="col">Invoice Date</th>
+                    <th scope="col">Total Tagihan</th>
+                    <th scope="col">Sisa Bayar</th>
+                    <th scope="col">Total Bayar</th>
+                    <th scope="col">Tanggal Bayar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of paymentInvoices; let i = index;">
+                    <td style="text-align: center">
+                      <input type="checkbox" name="itemChecked[{{i}}]" [(ngModel)]="item.isChecked" class="form-control" >
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="openDetail(item.invoiceCode)">Detail</button>
+                    </td>
+                    <td>
+                      <input type="text" name="invoiceCode[{{i}}]" [(ngModel)]="item.invoiceCode" class="form-control" readonly>
+                    </td>
+                    <td>
+                      <input type="text" name="invoiceDate[{{i}}]" [value]="item.invoiceDate | date : 'dd MMM yyyy'" class="form-control" readonly>
+                    </td>
+                    <td>
+                      <input currencyMask type="text" name="totalBill[{{i}}]" [(ngModel)]="item.totalBill" class="form-control" 
+                        [options]="{allowNegative :false, prefix : 'Rp ', precision : 0}"readonly>
+                    </td>
+                    <td>
+                      <input currencyMask type="text" name="remainingAmount[{{i}}]" [(ngModel)]="item.remainingAmount" class="form-control" 
+                        [options]="{allowNegative :false, prefix : 'Rp ', precision : 0}"readonly>
+                    </td>
+                    <td>
+                      <input currencyMask name="paidAmount[{{i}}]" [(ngModel)]="item.paidAmount" class="form-control"
+                        [options]="{allowNegative :false, prefix : ' ', precision : 0}">
+                      <label *ngIf="item.remainingAmount == 0 && (item.paidAmount > item.totalBill)" style="color: red">
+                        <i>
+                          *Total Bayar lebih dari Total Tagihan
+                        </i>
+                      </label>
+                      <label *ngIf="item.remainingAmount != 0 && (item.paidAmount > item.remainingAmount)" style="color: red">
+                        <i>
+                          *Total Bayar lebih dari Sisa Bayar
+                        </i>
+                      </label>
+                    </td>
+                    <td>                      
+                      <div class="input-group">
+                        <input type="text" name="dueDate[{{i}}]" class="form-control" [(ngModel)]="item.transactionDate"  bsDatepicker #dp="bsDatepicker">
+                        <span class="input-group-append">
+                          <button type="button" class="btn btn-success" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen">
+                            <i class="fa fa-calendar"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button type="submit" class="btn btn-primary" style="float: right;" [disabled]="form.form.invalid || !isSelected">Simpan</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<router-outlet></router-outlet>

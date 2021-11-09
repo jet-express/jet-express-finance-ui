@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <!-- <card-loader *ngIf="loading"></card-loader> -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form #form="ngForm" (submit)="save(data)">
+            <div class="form-group row">
+              <label class="col-md-1 col-form-label">Tahun
+              </label>
+              <div class="col-md-3">
+                <select id="year" name="type" class="form-control" [(ngModel)]="data.year" (ngModelChange)="getData()">
+                  <option value="" disabled>Please select</option>
+                  <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-1 col-form-label">Bulan</label>
+              <div class="col-md-3">
+                <select id="month" name="type" class="form-control" [(ngModel)]="data.month" (ngModelChange)="getData()">
+                  <option value="" disabled>Please select</option>
+                  <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-1 col-form-label">Minggu</label>
+              <div class="col-md-3">
+                <select id="week" name="type" class="form-control" [(ngModel)]="data.week" (ngModelChange)="getData()">
+                  <option value="" disabled>Please select</option>
+                  <option *ngFor="let week of weeks" value="{{week}}">{{week}}</option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="isShow" class="form-group row">
+              <label class="col-md-1 col-form-label" for="text-input">Tanggal Terima</label>
+              <div class="col-md-3">
+                <div class="input-group">
+                  <input name="recievedDate" type="text" placeholder="Datepicker" class="form-control" [(ngModel)]="data.receivedDate" value="{{dateNow | date: 'dd MMM yyyy'}}"
+                    bsDatepicker #dp="bsDatepicker">
+                  <span class="input-group-append">
+                    <button type="button" class="btn btn-success" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="isShow" class="form-group row">
+              <label class="col-md-1 col-form-label" for="text-input">Penerima</label>
+              <div class="col-md-3">
+                <input type="text" id="text-input" name="creator" class="form-control" [(ngModel)]="data.receiver" autocomplete="off" required>
+              </div>
+            </div>
+            <div *ngIf="isShow" class="form-group row">
+              <label class="col-md-1 col-form-label">Memo</label>
+              <div class="col-md-4">
+                  <textarea name="note" cols="20" rows="5" class="form-control" [(ngModel)]="data.note"></textarea>
+              </div>
+            </div>         
+            
+            <card-loader *ngIf="loading"></card-loader>
+
+            <table *ngIf="isShow" class="table table-striped" style="background-color: white; margin-top: 20px;">
+              <thead>
+                <tr>
+                  <th scope="col">Total Anggaran</th>
+                  <th scope="col">Cabang</th>
+                  <th scope="col">Pembuat Anggaran</th>
+                  <th scope="col">Dibuat Pada</th>
+                </tr>
+                <tr>
+                  <td>
+                    <input value="{{data.amount | currency : 'Rp '}}" class="form-control" readonly>
+                  </td>
+                  <td>
+                    <input value="{{data.branchCode}}" class="form-control" readonly>
+                  </td>
+                  <td>
+                    <input value="{{data.createdBy}}" class="form-control" readonly>
+                  </td>
+                  <td>
+                    <input value="{{data.createdDate | date : 'dd MMM yyyy'}}" class="form-control" readonly>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+            <button *ngIf="isShow" type="submit" class="btn btn-primary" style="float: right;" [disabled]="form.form.invalid">Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.table-layout-fixed {
+    table-layout: fixed;
+    white-space: nowrap;
+}
+
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 999;
+}

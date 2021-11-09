@@ -1,0 +1,97 @@
+<div class="animated fadeIn">
+  <div class="row">
+  <card-loader *ngIf="loading"></card-loader>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>No Invoice</label>
+                <span>{{data.code}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Cabang</label>
+                <span>{{data.branchCode}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Status</label>
+                <span>{{data.status}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Tipe Setoran</label>
+                <span>{{data.type}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Total Deposit</label>
+                <span>{{data.grandTotal  | currency : 'Rp '}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Total Waybill</label>
+                <span>{{data.totalWaybill}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Dibuat Oleh</label>
+                <span>{{data.createdBy}}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="description-block">
+                <label>Disetor Pada</label>
+                <span>{{data.createdDate | date : 'dd MMM yyyy HH:mm'}}</span>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-hover fixed-header">
+            <tbody>
+              <alert type="info" *ngIf="!loading && data.cashDepositItems.length == 0">
+                No Items
+              </alert>
+              <tr *ngFor="let item of data.cashDepositItems">
+                <td style="width: 1530px;">
+                  <span>{{item.transactionDate | date : 'dd MMM yyyy'}}</span>
+                  <span class="vertical-separator"></span>
+                  <span>{{item.awbStatus}}</span>
+                  <span class="vertical-separator"></span>
+                  <span>{{item.awbNumber}}</span>
+                  <span class="vertical-separator"></span>
+                  <span>{{item.paymentMethodCode}}</span>
+                  <span class="vertical-separator"></span>
+                  <span>{{item.codType}}</span>
+                  <span class="vertical-separator"></span>
+                  <span>{{item.amount | currency : 'Rp '}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <span style="float: left">
+            <button type="button" class="w100 btn btn-primary" (click)="back()">Kembali</button>
+          </span>
+          <span  style="float: right;">
+              <button *ngIf="data.status == 'CREATED' && isFinanceHQ" type="button" class="w100 m-r-10 btn btn-danger" (click)="reject()">Reject</button>
+              <button *ngIf="data.status == 'CREATED' && isFinanceHQ" type="button" class="w100 btn btn-success" (click)="approve()">Approve</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
